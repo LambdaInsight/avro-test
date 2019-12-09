@@ -95,5 +95,6 @@ let main argv =
   //let hit = { hitHostname="google.com"; hitMemoryUsed=0.3455; hitPage="index.html"; }
   // let avroMsg = getAvroMsg hit
   //Console.WriteLine hit
-  Console.WriteLine (getJsonFromAvro testAvroFrag).hitHostname
+  let frag = getJsonFromAvro testAvroFrag
+  Console.WriteLine("{0} : {1} : {2}", frag.hitHostname, frag.hitMemoryUsed, frag.hitPage)
   0
