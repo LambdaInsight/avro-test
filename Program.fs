@@ -1,8 +1,7 @@
 ﻿open System
 open System.IO
-open Microsoft.Hadoop.Avro.Container
-open Microsoft.Hadoop.Avro.Utils
-open Microsoft.Hadoop.Avro
+open PeterO.Cbor
+open MsgPack.Serialization
 
 type HitType = {
   hitHostname                                   : string;
@@ -10,61 +9,36 @@ type HitType = {
   hitPage                                       : string;
 }
 
-let schemaJson =
-  let streamReader =
-    new StreamReader @"avsc.json"
-  let fileContent =
-    streamReader.ReadToEnd().ToString()
-  fileContent
+let exampleHit = { hitHostname = "google.com"; hitMemoryUsed = 0.1234; hitPage = "index.html"}
 
-// let avroSchema =
-//   let schemaParsed =
-//     Schema.Parse(schemaJson)
-//   schemaParsed
+//DOESNTWORK
+let cborTest() =
+  // No support for HitType -> CBOR
+  Console.WriteLine("{0}", "Cbor test")
+  let cbor = CBORObject.NewMap().Add("hitHostname", "google.com").Add("hitMemoryUsed", 0.123).Add("hitPage", "index.html")
+  let encoded = cbor.EncodeToBytes()
+  let buffer = new MemoryStream()
+  buffer.Write(encoded, 0, encoded.Length)
+  buffer.Seek(int64(0), SeekOrigin.Begin) |> ignore
+  let decoded = CBORObject.Read(buffer);
+  Console.WriteLine("{0}", decoded)
 
-// let specificDatumWriter : SpecificDatumWriter<HitType> =
-//   SpecificDatumWriter(avroSchema)
+//WORKS
+let msgpackTest() =
+  Console.WriteLine("{0}", "msgpack test")
+  let serializer = MessagePackSerializer.Get<HitType>();
+  let buffer = new MemoryStream()
+  serializer.Pack(buffer, exampleHit)
+  buffer.Seek(int64(0), SeekOrigin.Begin) |> ignore
+  let deser = serializer.Unpack(buffer)
+  Console.WriteLine("{0}", deser)
 
-// let getAvroMsg msg =
-//   let memStream = new MemoryStream(256)
-//   let encoder = BinaryEncoder(memStream)
-//   specificDatumWriter.Write(msg, encoder)
-//   encoder.Flush()
-//   memStream.ToArray()
-
-// let hitEmpty =
-//   HitType()
-
-// let getJsonFromAvro (avroBytes: byte []) =
-//   Console.WriteLine("{0}", avroBytes.Length)
-//   let memStream = new MemoryStream(avroBytes.Length)
-//   Console.WriteLine("Capacity {0} : Length {1} : {2}", memStream.Capacity, memStream.Length, memStream.Position)
-//   memStream.Write(avroBytes, 0, avroBytes.Length)
-//   Console.WriteLine("Capacity {0} : Length {1} : {2}", memStream.Capacity, memStream.Length, memStream.Position)
-//   memStream.Seek(int64(0), SeekOrigin.Begin) |> ignore
-//   Console.WriteLine("Capacity {0} : Length {1} : {2}", memStream.Capacity, memStream.Length, memStream.Position)
-//   let reader = new SpecificDatumReader<HitType>(avroSchema,avroSchema)
-//   let decoder = BinaryDecoder(memStream)
-//   let ret = reader.Read(hitEmpty,decoder)
-//   memStream.Close()
-//   ret
-
-let testAvroFrag =
-  File.ReadAllBytes("example.avro")
-
-let avroSerde = AvroSerializer.Create<HitType>()
-
-let exampleHit = { hitHostname="google.com"; hitMemoryUsed=0.123; hitPage="index.html" }
+// ?
+let capnprotoTest =
+  Console.WriteLine("{0}", "")  
 
 [<EntryPoint>]
 let main argv =
-  let buffer = new MemoryStream()
-  Console.WriteLine("Capacity {0} : Length {1} : {2}", buffer.Capacity, buffer.Length, buffer.Position)
-  avroSerde.Serialize(buffer, exampleHit)
-  Console.WriteLine("Capacity {0} : Length {1} : {2}", buffer.Capacity, buffer.Length, buffer.Position)
-  buffer.Seek(int64(0), SeekOrigin.Begin) |> ignore
-  Console.WriteLine("Capacity {0} : Length {1} : {2}", buffer.Capacity, buffer.Length, buffer.Position)
-  // buffer.Write(testAvroFrag, 0, testAvroFrag.Length)
-  let frag = avroSerde.Deserialize(buffer)
-  Console.WriteLine(frag)
+  cborTest()
+  msgpackTest()
   0

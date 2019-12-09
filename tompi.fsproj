@@ -10,12 +10,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="FSharp.Data"                           Version="3.3.2" />
-    <PackageReference Include="HashDepot"                             Version="2.0.3" />
-    <PackageReference Include="Microsoft.Avro.Core"                   Version="0.1.0" />
-    <PackageReference Include="Microsoft.Avro.Tools"                  Version="0.1.0" />    
-    <PackageReference Include="PeterO.Cbor"                           Version="4.0.1" />
-    <PackageReference Include="System.Data.HashFunction.MurmurHash"   Version="2.0.0" />
+    <PackageReference Include="CapnpC.CSharp.MsBuild.Generation"          Version="1.1.112" />
+    <PackageReference Include="MsgPack.Cli"                               Version="1.0.1"   />
+    <PackageReference Include="PeterO.Cbor"                               Version="4.0.1"   />
+    <PackageReference Include="System.Data.HashFunction.MurmurHash"       Version="2.0.0"   />
+    
   </ItemGroup>
 
 </Project>
