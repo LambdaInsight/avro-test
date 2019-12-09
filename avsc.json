@@ -1,0 +1,10 @@
+{
+  "namespace": "com.lambdainsight.hit",
+  "type": "record",
+  "name": "Hit",
+  "fields": [
+     {"name": "hitHostname",                                     "type": "string" },
+     {"name": "hitMemoryUsed",                                   "type": "float"  },
+     {"name": "hitPage",                                         "type": "string" }
+  ]
+ }
