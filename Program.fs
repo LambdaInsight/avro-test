@@ -39,9 +39,11 @@ let hitEmpty =
 let getJsonFromAvro (avroBytes: byte []) =
   Console.WriteLine("{0}", avroBytes.Length)
   let memStream = new MemoryStream(avroBytes.Length)
-  Console.WriteLine("{0} : {1}", memStream.Capacity, memStream.Length)
+  Console.WriteLine("Capacity {0} : Length {1} : {2}", memStream.Capacity, memStream.Length, memStream.Position)
   memStream.Write(avroBytes, 0, avroBytes.Length)
-  Console.WriteLine("{0} : {1}", memStream.Capacity, memStream.Length)
+  Console.WriteLine("Capacity {0} : Length {1} : {2}", memStream.Capacity, memStream.Length, memStream.Position)
+  memStream.Seek(int64(0), SeekOrigin.Begin) |> ignore
+  Console.WriteLine("Capacity {0} : Length {1} : {2}", memStream.Capacity, memStream.Length, memStream.Position)
   let reader = new GenericDatumReader<HitType>(avroSchema,avroSchema)
   let decoder = BinaryDecoder(memStream)
   let ret = reader.Read(hitEmpty,decoder)
