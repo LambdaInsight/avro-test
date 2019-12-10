@@ -10,10 +10,9 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="CapnpC.CSharp.MsBuild.Generation"          Version="1.1.112" />
-    <PackageReference Include="MsgPack.Cli"                               Version="1.0.1"   />
-    <PackageReference Include="PeterO.Cbor"                               Version="4.0.1"   />
-    <PackageReference Include="System.Data.HashFunction.MurmurHash"       Version="2.0.0"   />
+    <PackageReference Include="MsgPack.Cli" Version="1.0.1" />
+    <PackageReference Include="PeterO.Cbor" Version="4.0.1" />
+    <PackageReference Include="System.Data.HashFunction.MurmurHash" Version="2.0.0" />
     
   </ItemGroup>
 

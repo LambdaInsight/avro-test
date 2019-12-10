@@ -15,7 +15,7 @@ let exampleHit = { hitHostname = "google.com"; hitMemoryUsed = 0.1234; hitPage =
 let cborTest() =
   // No support for HitType -> CBOR
   Console.WriteLine("{0}", "Cbor test")
-  let cbor = CBORObject.NewMap().Add("hitHostname", "google.com").Add("hitMemoryUsed", 0.123).Add("hitPage", "index.html")
+  let cbor = CBORObject.FromObject(exampleHit)
   let encoded = cbor.EncodeToBytes()
   let buffer = new MemoryStream()
   buffer.Write(encoded, 0, encoded.Length)
@@ -33,7 +33,7 @@ let msgpackTest() =
   let deser = serializer.Unpack(buffer)
   Console.WriteLine("{0}", deser)
 
-// ?
+//DOESNTWORK
 let capnprotoTest =
   Console.WriteLine("{0}", "")  
 
