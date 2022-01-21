@@ -11,7 +11,7 @@
   
   <ItemGroup>
     <PackageReference Include="MsgPack.Cli" Version="1.0.1" />
-    <PackageReference Include="PeterO.Cbor" Version="4.0.1" />
+    <PackageReference Include="PeterO.Cbor" Version="4.5.1" />
     <PackageReference Include="System.Data.HashFunction.MurmurHash" Version="2.0.0" />
     
   </ItemGroup>
